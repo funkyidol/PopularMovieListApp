@@ -1,8 +1,9 @@
+package com.sample.popularmovielist;
+
 import android.app.Application;
 
-import com.example.trivagoapp.utils.RetrofitHelper;
-
 import timber.log.Timber;
+import com.sample.popularmovielist.utils.RetrofitHelper;
 
 /**
  * Created by kshitij on 8/3/16.

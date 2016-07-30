@@ -1,4 +1,4 @@
-package utils;
+package com.sample.popularmovielist.utils;
 
 /**
  * Created by kshitij on 7/3/16.
