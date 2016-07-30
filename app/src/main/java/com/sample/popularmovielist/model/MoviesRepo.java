@@ -17,6 +17,8 @@ public interface MoviesRepo {
 
     void getPopularMovies(int page, GetPopularMoviesCallback getPopularMoviesCallback);
 
+    void searchMovies(String search, int page, GetPopularMoviesCallback getPopularMoviesCallback);
+
     interface GetPopularMoviesCallback {
         void onSuccess(ArrayList<MoviePojo> moviePojosArray);
 

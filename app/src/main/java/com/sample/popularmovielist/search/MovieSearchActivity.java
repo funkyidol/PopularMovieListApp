@@ -1,17 +1,20 @@
-package com.sample.popularmovielist.main;
+package com.sample.popularmovielist.search;
 
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.sample.popularmovielist.R;
 import com.sample.popularmovielist.model.pojo.MoviePojo;
-import com.sample.popularmovielist.search.MovieSearchActivity;
 import com.sample.popularmovielist.utils.MovieRecyclerAdapter;
 
 import java.util.ArrayList;
@@ -20,9 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View {
-
-    MainContract.UserActionListener userActionListener;
+public class MovieSearchActivity extends AppCompatActivity implements SearchContract.View {
 
     @BindView(R.id.rv_movies)
     RecyclerView rvMovies;
@@ -40,29 +41,95 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private ArrayList<MoviePojo> moviesList;
 
+    private SearchView searchView;
+    private SearchPresenter userActionListener;
+    private String searchTerm = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         rvMovies = (RecyclerView) findViewById(R.id.rv_movies);
-        userActionListener = new MainPresenter(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setVisibility(View.GONE);
+
+        userActionListener = new SearchPresenter(this);
+
+        userActionListener.loadData(searchTerm, currentPage);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //        inflater.inflate(R.menu.base, menu);
+
+        final MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) MenuItemCompat.getActionView(myActionMenuItem);
+        SearchView.SearchAutoComplete tvSearch =
+                (SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
+        tvSearch.setTextColor(Color.WHITE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();*/
-                startActivity(new Intent(MainActivity.this, MovieSearchActivity.class));
+            public boolean onQueryTextSubmit(String query) {
+                //Handle search query
+                if (moviesList != null) moviesList.clear();
+                currentPage = 1;
+                searchTerm = query;
+                search(query);
+
+                if (!searchView.isIconified()) {
+                    searchView.setIconified(true);
+                }
+                myActionMenuItem.collapseActionView();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                //                if (query.length() > 3) {
+                if (moviesList != null) moviesList.clear();
+                movieRecyclerAdapter = null;
+                currentPage = 1;
+                searchTerm = query;
+                search(query);
+                return true;
+                //                }
+                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+                //                return false;
             }
         });
 
-        userActionListener.loadData(currentPage);
+        return false;
+    }
+
+    private void search(String query) {
+        //        currentPage = 1;
+        isLoading = true;
+        userActionListener.loadData(query, currentPage);
+    }
+
+    private void loadData() {
+        isLoading = true;
+        userActionListener.loadData(searchTerm, currentPage);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        //        if (id == R.id.action_settings) {
+        //            return true;
+        //        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -70,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         isLoading = false;
         if (moviesList == null) {
             moviesList = new ArrayList<>(moviePojoArrayList);
-            movieRecyclerAdapter = new MovieRecyclerAdapter(moviesList, MainActivity.this);
+            movieRecyclerAdapter = new MovieRecyclerAdapter(moviesList, MovieSearchActivity.this);
             setupRecyclerView();
         } else {
             int oldSize = moviesList.size();
@@ -113,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     Timber.i("Reaching end. LoadMoreCalled");
                     currentPage++;
                     loadData();
-
                     //                    isLoading = true;
                 }
             }
@@ -123,9 +189,5 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvMovies.setLayoutManager(linearLayoutManager);
         rvMovies.setAdapter(movieRecyclerAdapter);
-    }
-
-    private void loadData() {
-        userActionListener.loadData(currentPage);
     }
 }
