@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.sample.popularmovielist.R;
 import com.sample.popularmovielist.model.pojo.MoviePojo;
+import com.sample.popularmovielist.utils.ImageLoader;
 
 import java.util.ArrayList;
 
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        rvMovies = (RecyclerView) findViewById(R.id.rv_movies);
+//        rvMovies = (RecyclerView) findViewById(R.id.rv_movies);
         userActionListener = new MainPresenter(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -167,8 +168,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         @Override
         public void onBindViewHolder(MovieRecyclerAdapter.ViewHolder holder, int position) {
             holder.tvTitle.setText(moviesList.get(position).getTitle());
-//            holder.tvYear.setText(moviesList.get(position).getYear());
+            holder.tvYear.setText(moviesList.get(position).getYear()+"");
             holder.tvOverview.setText(moviesList.get(position).getOverview());
+            ImageLoader.loadImage(moviesList.get(position).getImages().getThumb().getFull(),
+                    holder.ivThumbnail,MainActivity.this);
         }
 
         @Override
