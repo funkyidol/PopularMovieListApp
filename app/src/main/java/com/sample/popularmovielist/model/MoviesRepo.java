@@ -1,6 +1,6 @@
 package com.sample.popularmovielist.model;
 
-import com.example.trivagoapp.model.pojo.MoviePojo;
+import com.sample.popularmovielist.model.pojo.MoviePojo;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public interface MoviesRepo {
 
     void getPopularMovies(int page, GetPopularMoviesCallback getPopularMoviesCallback);
 
-    interface GetPopularMoviesCallback{
+    interface GetPopularMoviesCallback {
         void onSuccess(ArrayList<MoviePojo> moviePojosArray);
 
         void onFailure(Throwable throwable);

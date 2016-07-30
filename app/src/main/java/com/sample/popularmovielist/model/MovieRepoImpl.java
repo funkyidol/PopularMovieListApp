@@ -1,8 +1,8 @@
 package com.sample.popularmovielist.model;
 
-import com.example.trivagoapp.model.pojo.MoviePojo;
-import com.example.trivagoapp.utils.Constants;
-import com.example.trivagoapp.utils.RetrofitHelper;
+import com.sample.popularmovielist.model.pojo.MoviePojo;
+import com.sample.popularmovielist.utils.Constants;
+import com.sample.popularmovielist.utils.RetrofitHelper;
 
 import java.util.ArrayList;
 
