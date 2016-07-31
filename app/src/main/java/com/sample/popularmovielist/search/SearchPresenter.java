@@ -1,8 +1,8 @@
 package com.sample.popularmovielist.search;
 
-import com.sample.popularmovielist.model.MovieRepoImpl;
-import com.sample.popularmovielist.model.MoviesRepo;
-import com.sample.popularmovielist.model.pojo.MoviePojo;
+import com.sample.popularmovielist.model.search.SearchMovieRepo;
+import com.sample.popularmovielist.model.search.SearchMovieRepoImpl;
+import com.sample.popularmovielist.model.search.pojo.SearchMoviePojo;
 
 import java.util.ArrayList;
 
@@ -14,17 +14,17 @@ import timber.log.Timber;
 public class SearchPresenter implements SearchContract.UserActionListener {
 
     SearchContract.View view;
-    MoviesRepo moviesRepo = new MovieRepoImpl();
+    SearchMovieRepo searchMovieRepo = new SearchMovieRepoImpl();
 
-    public SearchPresenter(SearchContract.View view){
+    public SearchPresenter(SearchContract.View view) {
         this.view = view;
     }
 
     @Override
     public void loadData(String search, int page) {
-        moviesRepo.searchMovies(search, page, new MoviesRepo.GetPopularMoviesCallback() {
+        searchMovieRepo.searchMovies(search, page, new SearchMovieRepo.SearchMoviesCallback() {
             @Override
-            public void onSuccess(ArrayList<MoviePojo> moviePojosArray) {
+            public void onSuccess(ArrayList<SearchMoviePojo> moviePojosArray) {
                 view.populateMovies(moviePojosArray);
             }
 

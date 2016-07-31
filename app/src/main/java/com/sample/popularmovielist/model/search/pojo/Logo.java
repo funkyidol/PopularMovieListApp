@@ -1,21 +1,21 @@
 
-package com.sample.popularmovielist.model.pojo;
+package com.sample.popularmovielist.model.search.pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Banner {
+public class Logo {
 
     @SerializedName("full")
     @Expose
-    private String full;
+    private Object full;
 
     /**
      * 
      * @return
      *     The full
      */
-    public String getFull() {
+    public Object getFull() {
         return full;
     }
 
@@ -24,7 +24,7 @@ public class Banner {
      * @param full
      *     The full
      */
-    public void setFull(String full) {
+    public void setFull(Object full) {
         this.full = full;
     }
 

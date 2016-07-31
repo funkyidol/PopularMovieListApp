@@ -1,6 +1,6 @@
-package com.sample.popularmovielist.model;
+package com.sample.popularmovielist.model.movie;
 
-import com.sample.popularmovielist.model.pojo.MoviePojo;
+import com.sample.popularmovielist.model.movie.pojo.MoviePojo;
 
 import java.util.ArrayList;
 
@@ -32,5 +32,13 @@ public interface MoviesRepo {
                                                  @Header("trakt-api-key") String apiKey,
                                                  @Query("limit") int limit,
                                                  @Query("page") int page);
+
+        @Headers("Content-Type: application/json")
+        @GET("search/movie?extended=full,images")
+        Call<ArrayList<MoviePojo>> searchMovies(@Header("trakt-api-version") int apiVersion,
+                                                @Header("trakt-api-key") String apiKey,
+                                                @Query("query") String query,
+                                                @Query("limit") int limit,
+                                                @Query("page") int page);
     }
 }

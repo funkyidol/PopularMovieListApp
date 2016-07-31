@@ -1,10 +1,10 @@
 
-package com.sample.popularmovielist.model.pojo;
+package com.sample.popularmovielist.model.movie.pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Thumb {
+public class Banner {
 
     @SerializedName("full")
     @Expose

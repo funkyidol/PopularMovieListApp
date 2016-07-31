@@ -1,6 +1,6 @@
 package com.sample.popularmovielist.main;
 
-import com.sample.popularmovielist.model.pojo.MoviePojo;
+import com.sample.popularmovielist.model.movie.pojo.MoviePojo;
 
 import java.util.ArrayList;
 

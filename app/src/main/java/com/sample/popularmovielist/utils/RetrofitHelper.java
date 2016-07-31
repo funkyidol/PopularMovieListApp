@@ -1,15 +1,9 @@
 package com.sample.popularmovielist.utils;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
 
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -31,7 +25,7 @@ public class RetrofitHelper {
 
                 HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
                 interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+                OkHttpClient client = new OkHttpClient.Builder()/*.addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         ConnectivityManager cm =
@@ -47,7 +41,7 @@ public class RetrofitHelper {
                             throw new IOException("No Internet Connection. Please try again.");
                         }
                     }
-                }).addInterceptor(interceptor).build();
+                })*/.addInterceptor(interceptor).build();
 
                 retrofit = new Retrofit.Builder().baseUrl(Constants.ApiConsts.BASE_URL)
                         .client(client)

@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.sample.popularmovielist.R;
-import com.sample.popularmovielist.model.pojo.MoviePojo;
+import com.sample.popularmovielist.model.movie.pojo.MoviePojo;
 import com.sample.popularmovielist.search.MovieSearchActivity;
 import com.sample.popularmovielist.utils.MovieRecyclerAdapter;
 
@@ -68,14 +68,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void populateMovies(ArrayList<MoviePojo> moviePojoArrayList) {
         isLoading = false;
-        if (moviesList == null) {
-            moviesList = new ArrayList<>(moviePojoArrayList);
-            movieRecyclerAdapter = new MovieRecyclerAdapter(moviesList, MainActivity.this);
-            setupRecyclerView();
-        } else {
-            int oldSize = moviesList.size();
-            moviesList.addAll(moviePojoArrayList);
-            movieRecyclerAdapter.notifyItemInserted(oldSize);
+        if (moviePojoArrayList != null && moviePojoArrayList.size() > 0) {
+            if (moviesList == null) {
+                moviesList = new ArrayList<>(moviePojoArrayList);
+                movieRecyclerAdapter = new MovieRecyclerAdapter(moviesList, MainActivity.this);
+                setupRecyclerView();
+            } else {
+                int oldSize = moviesList.size();
+                moviesList.addAll(moviePojoArrayList);
+                movieRecyclerAdapter.notifyItemInserted(oldSize);
+            }
         }
     }
 

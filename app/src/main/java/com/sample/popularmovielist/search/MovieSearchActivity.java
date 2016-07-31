@@ -14,8 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.sample.popularmovielist.R;
-import com.sample.popularmovielist.model.pojo.MoviePojo;
-import com.sample.popularmovielist.utils.MovieRecyclerAdapter;
+import com.sample.popularmovielist.model.search.pojo.SearchMoviePojo;
+import com.sample.popularmovielist.utils.SearchMovieRecyclerAdapter;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class MovieSearchActivity extends AppCompatActivity implements SearchCont
     @BindView(R.id.rv_movies)
     RecyclerView rvMovies;
 
-    protected MovieRecyclerAdapter movieRecyclerAdapter;
+    protected SearchMovieRecyclerAdapter movieRecyclerAdapter;
     private RecyclerView.OnScrollListener onScrollListener;
     private LinearLayoutManager linearLayoutManager;
     private int visibleItemCount;
@@ -39,7 +39,7 @@ public class MovieSearchActivity extends AppCompatActivity implements SearchCont
     private int visibleThreshold = 5;
     private int currentPage = 1;
 
-    private ArrayList<MoviePojo> moviesList;
+    private ArrayList<SearchMoviePojo> moviesList;
 
     private SearchView searchView;
     private SearchPresenter userActionListener;
@@ -65,8 +65,7 @@ public class MovieSearchActivity extends AppCompatActivity implements SearchCont
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //        inflater.inflate(R.menu.base, menu);
-
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         final MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) MenuItemCompat.getActionView(myActionMenuItem);
         SearchView.SearchAutoComplete tvSearch =
@@ -77,6 +76,7 @@ public class MovieSearchActivity extends AppCompatActivity implements SearchCont
             public boolean onQueryTextSubmit(String query) {
                 //Handle search query
                 if (moviesList != null) moviesList.clear();
+                if (movieRecyclerAdapter != null) movieRecyclerAdapter.notifyDataSetChanged();
                 currentPage = 1;
                 searchTerm = query;
                 search(query);
@@ -92,7 +92,8 @@ public class MovieSearchActivity extends AppCompatActivity implements SearchCont
             public boolean onQueryTextChange(String query) {
                 //                if (query.length() > 3) {
                 if (moviesList != null) moviesList.clear();
-                movieRecyclerAdapter = null;
+                if (movieRecyclerAdapter != null) movieRecyclerAdapter.notifyDataSetChanged();
+                //                movieRecyclerAdapter = null;
                 currentPage = 1;
                 searchTerm = query;
                 search(query);
@@ -103,7 +104,22 @@ public class MovieSearchActivity extends AppCompatActivity implements SearchCont
             }
         });
 
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_search) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void search(String query) {
@@ -118,31 +134,19 @@ public class MovieSearchActivity extends AppCompatActivity implements SearchCont
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        //        if (id == R.id.action_settings) {
-        //            return true;
-        //        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void populateMovies(ArrayList<MoviePojo> moviePojoArrayList) {
+    public void populateMovies(ArrayList<SearchMoviePojo> moviePojoArrayList) {
         isLoading = false;
-        if (moviesList == null) {
-            moviesList = new ArrayList<>(moviePojoArrayList);
-            movieRecyclerAdapter = new MovieRecyclerAdapter(moviesList, MovieSearchActivity.this);
-            setupRecyclerView();
-        } else {
-            int oldSize = moviesList.size();
-            moviesList.addAll(moviePojoArrayList);
-            movieRecyclerAdapter.notifyItemInserted(oldSize);
+        if (moviePojoArrayList != null && moviePojoArrayList.size() > 0) {
+            if (moviesList == null) {
+                moviesList = new ArrayList<>(moviePojoArrayList);
+                movieRecyclerAdapter =
+                        new SearchMovieRecyclerAdapter(moviesList, MovieSearchActivity.this);
+                setupRecyclerView();
+            } else {
+                int oldSize = moviesList.size();
+                moviesList.addAll(moviePojoArrayList);
+                movieRecyclerAdapter.notifyItemInserted(oldSize);
+            }
         }
     }
 

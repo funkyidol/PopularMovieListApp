@@ -1,5 +1,5 @@
 
-package com.sample.popularmovielist.model.pojo;
+package com.sample.popularmovielist.model.search.pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

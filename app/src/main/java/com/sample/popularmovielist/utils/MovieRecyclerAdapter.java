@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sample.popularmovielist.R;
-import com.sample.popularmovielist.model.pojo.MoviePojo;
+import com.sample.popularmovielist.model.movie.pojo.MoviePojo;
 
 import java.util.ArrayList;
 
@@ -37,9 +37,11 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         holder.tvTitle.setText(moviesList.get(position).getTitle());
         holder.tvYear.setText(moviesList.get(position).getYear() + "");
         holder.tvOverview.setText(moviesList.get(position).getOverview());
-        ImageLoader.loadImage(moviesList.get(position).getImages().getThumb().getFull(),
-                holder.ivThumbnail,
-                context);
+        /*if (!TextUtils.isEmpty(moviesList.get(position).getImages().getThumb().getFull())) {
+            ImageLoader.loadImage(moviesList.get(position).getImages().getThumb().getFull(),
+                    holder.ivThumbnail,
+                    context);
+        }*/
     }
 
     @Override

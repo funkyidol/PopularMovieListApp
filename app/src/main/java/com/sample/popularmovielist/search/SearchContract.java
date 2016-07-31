@@ -1,6 +1,6 @@
 package com.sample.popularmovielist.search;
 
-import com.sample.popularmovielist.model.pojo.MoviePojo;
+import com.sample.popularmovielist.model.search.pojo.SearchMoviePojo;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public interface SearchContract {
     interface View {
-        void populateMovies(ArrayList<MoviePojo> moviePojoArrayList);
+        void populateMovies(ArrayList<SearchMoviePojo> moviePojoArrayList);
     }
 
     interface UserActionListener {
